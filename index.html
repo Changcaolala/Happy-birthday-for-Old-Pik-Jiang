@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>生日快乐！</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: url('/res/bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        #container {
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            padding: 20px;
+        }
+
+        #slideshow {
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            border: 5px solid white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #slideshow img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        #timer {
+            font-size: 24px;
+            margin: 20px;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+            animation: float 1s ease-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <audio id="music" loop>
+        <source src="/res/birthday.mp3" type="audio/mpeg">
+    </audio>
+    
+    <div id="container">
+        <h1>🎉 生日快乐！ 🎂</h1>
+        <div id="slideshow">
+            <img src="/res/1.jpg" alt="照片1">
+            <img src="/res/2.jpg" alt="照片2">
+            <img src="/res/3.jpg" alt="照片3">
+        </div>
+        <div id="timer"></div>
+        <p>点击任意位置播放音乐并出现爱心</p>
+    </div>
+
+    <script>
+        // 读取配置文件
+        fetch('/res/config.json')
+            .then(response => response.json())
+            .then(config => {
+                // 计算生存时间
+                function updateTimer() {
+                    const birthDate = new Date(config.birthDate);
+                    const now = new Date();
+                    const diff = now - birthDate;
+                    
+                    const years = now.getFullYear() - birthDate.getFullYear();
+                    const months = now.getMonth() - birthDate.getMonth();
+                    const days = now.getDate() - birthDate.getDate();
+                    
+                    document.getElementById('timer').innerHTML = `
+                        你已经在世上存在了：<br>
+                        ${years} 年 ${months} 月 ${days} 天<br>
+                        ${Math.floor(diff/86400000)} 天<br>
+                        ${Math.floor(diff/3600000)} 小时<br>
+                        ${Math.floor(diff/60000)} 分钟
+                    `;
+                }
+                setInterval(updateTimer, 1000);
+            });
+
+        // 图片轮播
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('#slideshow img');
+        function showSlides() {
+            slides.forEach(slide => slide.style.display = 'none');
+            slideIndex = (slideIndex + 1) % slides.length;
+            slides[slideIndex].style.display = 'block';
+        }
+        setInterval(showSlides, 3000);
+
+        // 点击爱心效果
+        document.addEventListener('click', function(e) {
+            const heart = document.createElement('img');
+            heart.src = '/res/heart.png';
+            heart.className = 'heart';
+            heart.style.left = e.pageX - 10 + 'px';
+            heart.style.top = e.pageY - 10 + 'px';
+            document.body.appendChild(heart);
+            
+            // 播放音乐
+            const music = document.getElementById('music');
+            if (music.paused) {
+                music.play();
+            }
+            
+            setTimeout(() => heart.remove(), 1000);
+        });
+    </script>
+</body>
+</html>
