@@ -79,24 +79,44 @@
         fetch('/Happy-birthday-for-Old-Pik-Jiang/res/config.json')
             .then(response => response.json())
             .then(config => {
-                // 计算生存时间
-                function updateTimer() {
-                    const birthDate = new Date(config.birthDate);
-                    const now = new Date();
-                    const diff = now - birthDate;
-                    
-                    const years = now.getFullYear() - birthDate.getFullYear();
-                    const months = now.getMonth() - birthDate.getMonth();
-                    const days = now.getDate() - birthDate.getDate();
-                    
-                    document.getElementById('timer').innerHTML = `
-                        你已经在世上存在了：<br>
-                        ${years} 年 ${months} 月 ${days} 天<br>
-                        ${Math.floor(diff/86400000)} 天<br>
-                        ${Math.floor(diff/3600000)} 小时<br>
-                        ${Math.floor(diff/60000)} 分钟
-                    `;
-                }
+            // 修复后的代码（替换内容）
+function updateTimer() {
+    const birthDate = new Date(config.birthDate);
+    const now = new Date();
+    const diff = now - birthDate;
+
+    let years = now.getFullYear() - birthDate.getFullYear();
+    let months = now.getMonth() - birthDate.getMonth();
+    let days = now.getDate() - birthDate.getDate();
+
+    // 处理月份负数（注意JS月份从0开始）
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+
+    // 处理天数负数
+    if (days < 0) {
+        // 获取上个月最后一天的日期
+        const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+        days += lastDayOfMonth.getDate();
+        months--;
+
+        // 再次检查月份是否需要调整
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+    }
+
+    document.getElementById('timer').innerHTML = `
+        你已经在世上存在了：<br>
+        ${years} 年 ${months} 月 ${days} 天<br>
+        ${Math.floor(diff/86400000)} 天<br>
+        ${Math.floor(diff/3600000)} 小时<br>
+        ${Math.floor(diff/60000)} 分钟
+    `;
+}
                 setInterval(updateTimer, 1000);
             });
 
