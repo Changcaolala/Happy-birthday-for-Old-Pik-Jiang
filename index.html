@@ -1,31 +1,345 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <title>Material Design 生日祝福</title>
-  <link rel="stylesheet" href="/Happy-birthday-for-Old-Pik-Jiang/res/css/styles.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日快乐！</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --md-primary: #6750A4;
+            --md-on-primary: #FFFFFF;
+            --md-surface: #FEF7FF;
+            --md-background: linear-gradient(135deg, #F3EDF7 30%, #E8DEF8 100%);
+            --md-texture: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='M10 10c0-2 1-3 3-3s3 1 3 3-1 3-3 3-3-1-3-3zM0 0h52v26H0V0z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+    body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    background: 
+        var(--md-background) fixed,
+        var(--md-texture);
+ /* 新增背景组合 */
+}
+
+        /* 轮播容器 */
+               .carousel {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 0 28px 28px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center; 
+        }
+
+        /* 新增时间计数器样式 */
+        .time-counter {
+            background: rgba(103, 80, 164, 0.1);
+            padding: 16px;
+            border-radius: 16px;
+            margin: 20px 0;
+            font-size: 1.2em;
+            color: var(--md-primary);
+            display: inline-block;
+        }
+
+        .time-counter span {
+            display: inline-block;
+            margin: 0 4px;
+            padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 音乐控件 */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--md-primary);
+            color: var(--md-on-primary);
+            border-radius: 50%;
+            padding: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* 爱心效果 */
+        .heart {
+            position: absolute;
+            animation: heart 0.8s linear;
+            color: #FF4081;
+        }
+
+        @keyframes heart {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 0; }
+        }
+
+        /* 内容区域 */
+      .content {
+    padding: 24px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.85); /* 新增半透明背景 */
+    border-radius: 28px; /* 增大圆角 */
+    margin: 20px auto; /* 增加外边距 */
+    max-width: 800px; /* 限制最大宽度 */
+    backdrop-filter: blur(8px); /* 毛玻璃效果 */
+    box-shadow: 0 8px 32px rgba(103, 80, 164, 0.1); /* 新增阴影 */
+}
+/* 祝福语生成器样式 */
+.wish-section {
+    margin: 24px 0;
+}
+
+.wish-text {
+    background: rgba(255, 228, 225, 0.3);
+    padding: 16px;
+    border-radius: 16px;
+    margin: 12px auto;
+    max-width: 600px;
+    animation: fadeIn 0.5s;
+    display: none; /* 初始隐藏 */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+        h1 {
+            color: var(--md-primary);
+            font-size: 2.5em;
+            margin-bottom: 16px;
+        }
+
+        .md-button {
+            background: var(--md-primary);
+            color: var(--md-on-primary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 8px;
+            transition: transform 0.2s;
+        }
+
+        .md-button:active {
+            transform: scale(0.95);
+        }
+
+    </style>
 </head>
 <body>
-  <main class="container">
-    <h1><i class="material-icons">cake</i> 生日快乐！</h1>
-    
-    <div class="slideshow">
-      <img src="/Happy-birthday-for-Old-Pik-Jiang/res/imgs/1.jpg" class="active">
-      <img src="/Happy-birthday-for-Old-Pik-Jiang/res/imgs/2.jpg">
-      <img src="/Happy-birthday-for-Old-Pik-Jiang/res/imgs/3.jpg">
+    <!-- 新增背景气泡 -->
+    <div class="background-bubble"></div>
+    <div class="background-bubble"></div>
+    <div class="background-bubble"></div>
+
+    <div class="carousel">
+        <div class="carousel-item active">
+            <img src="/Happy-birthday-for-Old-Pik-Jiang/res/images/生日图片1.jpg" alt="生日图片1">
+        </div>
+        <div class="carousel-item">
+            <img src="/Happy-birthday-for-Old-Pik-Jiang/res/images/生日图片2.jpg" alt="生日图片2">
+        </div>
+        <div class="carousel-item">
+            <img src="/Happy-birthday-for-Old-Pik-Jiang/res/images/生日图片3.jpg" alt="生日图片3">
+        </div>
     </div>
 
-    <div class="timer" id="timer">正在加载时间...</div>
-  </main>
+    <!-- 新增时间显示容器 -->
+    <div class="content">
+        <h1>生日快乐！🎉</h1>
+        <div id="timeCounter" class="time-counter"></div>
+    
+    <!-- 新增祝福语生成器 -->
+    <div class="wish-section">
+        <button class="md-button" onclick="generateWish()">获取神秘祝福</button>
+        <p id="wishText" class="wish-text"></p>
+    </div>
+    
+        
 
-  <div class="music-controls">
-    <input type="range" id="volume" min="0" max="1" step="0.1" value="1">
-    <button class="fab">
-      <i class="material-icons">volume_up</i>
-    </button>
-  </div>
+    <div class="music-control" onclick="toggleMusic()">
+        <span class="material-icons">volume_off</span>
+    </div>
 
-  <script src="/Happy-birthday-for-Old-Pik-Jiang/res/js/script.js"></script>
+    <audio id="bgm" loop>
+        <source src="/Happy-birthday-for-Old-Pik-Jiang/res/audio/birthday.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // 时间计算功能（必须放在最前面）------------------
+        const birthDate = new Date('2000-01-01T00:00:00'); // 修改这个日期！
+
+        function calculateDuration() {
+            const now = new Date();
+            let years = now.getFullYear() - birthDate.getFullYear();
+            let months = now.getMonth() - birthDate.getMonth();
+            let days = now.getDate() - birthDate.getDate();
+            let hours = now.getHours() - birthDate.getHours();
+            let minutes = now.getMinutes() - birthDate.getMinutes();
+            let seconds = now.getSeconds() - birthDate.getSeconds();
+
+            if (seconds < 0) {
+                seconds += 60;
+                minutes--;
+            }
+            if (minutes < 0) {
+                minutes += 60;
+                hours--;
+            }
+            if (hours < 0) {
+                hours += 24;
+                days--;
+            }
+            if (days < 0) {
+                const tempDate = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += tempDate.getDate();
+                months--;
+            }
+            if (months < 0) {
+                months += 12;
+                years--;
+            }
+
+            return { years, months, days, hours, minutes, seconds };
+        }
+
+        function updateTime() {
+            const duration = calculateDuration();
+            const timeString = `
+                <span>${duration.years} 年</span>
+                <span>${duration.months} 月</span>
+                <span>${duration.days} 日</span>
+                <span>${duration.hours} 时</span>
+                <span>${duration.minutes} 分</span>
+                <span>${duration.seconds} 秒</span>
+            `;
+            document.getElementById('timeCounter').innerHTML = `您已在这个世界度过了：<br>${timeString}`;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime(); // 立即执行一次
+        // 时间计算功能结束 --------------------------
+// 祝福语生成器功能
+const wishes = [
+    "✨ 你的微笑是今天最美的礼物",
+    "🎈 愿每个愿望都像气球般飞向蓝天",
+    "🍰 甜蜜的岁月从这一口蛋糕开始",
+    "🌠 新的一岁继续闪闪发光吧",
+    "🦋 时光会带来最美好的蜕变"
+];
+
+function generateWish() {
+    const wishElement = document.getElementById('wishText');
+    const randomIndex = Math.floor(Math.random() * wishes.length);
+    
+    wishElement.textContent = wishes[randomIndex];
+    wishElement.style.display = 'block'; // 显示祝福语
+    
+    // 3秒后渐隐
+    setTimeout(() => {
+        wishElement.style.opacity = '0';
+        setTimeout(() => {
+            wishElement.style.display = 'none';
+            wishElement.style.opacity = '1';
+        }, 500);
+    }, 3000);
+}
+
+        // 图片轮播
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-item');
+        
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        setInterval(nextSlide, 5000);
+
+        // 音乐控制
+        const audio = document.getElementById('bgm');
+        const musicButton = document.querySelector('.music-control');
+        
+        const musicIcon = document.querySelector('.music-control .material-icons'); // 新增选择器
+
+function toggleMusic() {
+    if (audio.paused) {
+        audio.play();
+        musicIcon.textContent = 'volume_up';  // 播放时图标
+    } else {
+        audio.pause();
+        musicIcon.textContent = 'volume_off'; // 暂停时图标
+    }
+}
+
+        // 爱心效果
+        document.addEventListener('click', function(e) {
+            const heart = document.createElement('span');
+            heart.className = 'material-icons heart';
+            heart.innerHTML = 'favorite';
+            heart.style.left = e.pageX - 12 + 'px';
+            heart.style.top = e.pageY - 12 + 'px';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 800);
+        });
+
+        // 彩纸效果
+        function showConfetti() {
+            alert('🎂 祝你生日快乐！ 🎉');
+        }
+    </script>
 </body>
 </html>
